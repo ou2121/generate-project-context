@@ -213,4 +213,3 @@ PRs welcome. Ideas:
 ## License
 
 MIT
-# generate-project-context
