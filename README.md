@@ -22,58 +22,30 @@ A small, opinionated CLI tool that packages project source files into a single c
 
 your-project/
 ├── .context/
-│   ├── generate.py          # generator (downloaded or added by installer)
+│   ├── generate.py          # generator (downloaded or copied)
 │   ├── .ai-context.yml      # optional config
 │   └── generated/           # outputs (gitignored by installer)
-├── scripts/
-│   ├── install_context.py   # Python installer
-│   └── install_context.sh   # Shell installer
 ├── src/
 └── ...
 
 ```
 
----
-
 ## Install
 
-Two ways: automated (recommended) or manual.
+Two simple options: copy the `.context` folder from the repo (recommended) or manually download the generator.
 
-### Automated (recommended)
+### Recommended — copy `.context` via `git clone`
 
-From the **project root**, run either the shell or python installer.
-
-Shell:
+Run from your **project root**:
 
 ```bash
-chmod +x scripts/install_context.sh
-./scripts/install_context.sh --download-generate "https://github.com/temrb/generate-project-context/main/.context/generate.py"
+git clone --depth=1 https://github.com/temrb/generate-project-context.git tmp_repo \
+  && mv tmp_repo/.context . \
+  && rm -rf tmp_repo \
+  && chmod +x .context/generate.py
 ```
 
-Python:
-
-```bash
-python3 scripts/install_context.py --download-generate "https://github.com/temrb/generate-project-context/.context/generate.py"
-```
-
-The installers will:
-
-- Ensure `.context/generated/` exists
-- Add `.context/generated/` and `**/generated/` to `.gitignore` (if missing)
-- Optionally download `generate.py` into `.context/`
-
-### Manual
-
-```bash
-mkdir -p .context/generated
-# Add a .gitignore entry:
-printf ".context/generated/\n**/generated/\n" >> .gitignore
-# Place the generator
-curl -o .context/generate.py https://github.com/temrb/generate-project-context/.context/generate.py
-chmod +x .context/generate.py
-```
-
----
+This copies the `.context` folder (including `generate.py`) into your project and makes the generator executable.
 
 ## Optional deps
 
@@ -81,11 +53,11 @@ chmod +x .context/generate.py
 pip3 install pyyaml chardet tqdm
 ```
 
-- `pyyaml`: read `.ai-context.yml`
-- `chardet`: better encoding detection
-- `tqdm`: progress bars
+- `pyyaml` — read `.ai-context.yml` configs
+- `chardet` — improve encoding detection
+- `tqdm` — progress bars
 
-If you omit them, the generator will still run but with reduced functionality (warnings are shown).
+The generator runs without them but with reduced functionality (you’ll see warnings).
 
 ---
 
@@ -124,7 +96,7 @@ preset: python
 paths:
   - src
   - lib
-output: context.md # if just a filename it's written under .context/generated/
+output: context.md # written to .context/generated/
 include:
   - '*.md'
   - 'Dockerfile'
@@ -141,18 +113,17 @@ verbose: false
 
 ---
 
-## CLI flags
+## CLI flags (summary)
 
 - `paths` — directories/files to scan (default: project root)
-- `-o, --output` — output file name (default: `.context/generated/context.txt`)
+- `-o, --output` — output filename (default: `.context/generated/context.txt`)
 - `--preset` — project preset (auto | python | javascript | java | go | rust | ...)
-- `--include` — add include glob patterns
-- `--exclude` — add exclude glob patterns
-- `--max-file-size-mb` — skip files larger than this (default 1 MB)
-- `--format` — `text` (default) | `markdown` | `json`
+- `--include` / `--exclude` — glob patterns
+- `--max-file-size-mb` — skip large files (default: 1 MB)
+- `--format` — `text` | `markdown` | `json`
 - `--minify` — experimental comment/whitespace removal
-- `--dry-run` — list files that would be processed
-- `-v, --verbose` — more logging
+- `--dry-run` — list files without generating
+- `-v, --verbose` — verbose logging
 - `--version` — show version
 
 ---

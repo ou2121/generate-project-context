@@ -28,7 +28,7 @@ exclude:
   - '*.md'
 
 # The name and format of the final output file.
-output: test_project_context.md
+output: generated_context.md
 format: markdown # Can be: text, markdown, or json
 
 # Add custom glob patterns to the preset's lists.
