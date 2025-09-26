@@ -1,0 +1,47 @@
+# .ai-context.yml (example)
+# This is the configuration file for the AI Context Generator.
+# Settings here will be used automatically when you run the script.
+
+# Specify a project type preset (e.g., python, javascript, go, auto).
+# This determines the initial set of files to include and exclude.
+preset: javascript
+
+# A list of directories or files to scan. If this is not specified,
+# it defaults to the current directory ["."].
+paths:
+  - src
+
+include:
+  - '*.js'
+  - '*.tsx'
+  - '*.ts'
+  - '*.json'
+  - '*.html'
+  - '*.css'
+
+exclude:
+  - 'node_modules/**'
+  - 'dist/**'
+  - 'build/**'
+  - '.git/**'
+  - '*.log'
+  - '*.md'
+
+# The name and format of the final output file.
+output: test_project_context.md
+format: markdown # Can be: text, markdown, or json
+
+# Add custom glob patterns to the preset's lists.
+# These are APPENDED to the preset's rules, they don't replace them.
+
+# Set the maximum file size in megabytes.
+# Files larger than this will be skipped. Use 0 for no limit.
+max_file_size_mb: 2
+
+# Enable the experimental minification feature to remove comments and
+# extra whitespace from code.
+minify: true
+
+# Enable verbose logging to see details like which files were skipped
+# and why. This is useful for debugging your configuration.
+verbose: false
