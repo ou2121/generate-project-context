@@ -67,22 +67,22 @@ From your project root:
 
 ```bash
 # Basic (auto-detect project type)
-python .context/generate.py
+python3 .context/generate.py
 
 # Scan specific directories
-python .context/generate.py src/ tests/
+python3 .context/generate.py src/ tests/
 
 # Use a preset
-python .context/generate.py --preset python
+python3 .context/generate.py --preset python
 
 # Output markdown with a custom filename (placed in .context/generated/)
-python .context/generate.py --output api_docs.md --format markdown
+python3 .context/generate.py --output api_docs.md --format markdown
 
 # Enable experimental minification
-python .context/generate.py --minify
+python3 .context/generate.py --minify
 
 # Dry run (list files that would be processed)
-python .context/generate.py --dry-run --verbose
+python3 .context/generate.py --dry-run --verbose
 ```
 
 ---
