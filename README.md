@@ -32,20 +32,39 @@ your-project/
 
 ## Install
 
-Two simple options: copy the `.context` folder from the repo (recommended) or manually download the generator.
+Two simple options: copy the `.context` folder from the repo (recommended) or manually download the generator. Run from your **project root**:
 
-### Recommended — copy `.context` via `git clone`
-
-Run from your **project root**:
+#### MacOS / Linux / WSL / Git Bash
 
 ```bash
 git clone --depth=1 https://github.com/temrb/generate-project-context.git tmp_repo \
-  && mv tmp_repo/.context . \
+  && rm -rf .context \
+  && mv tmp_repo/.context ./ \
   && rm -rf tmp_repo \
-  && chmod +x .context/generate.py
+  && chmod +x .context/generate.py || true
 ```
 
-This copies the `.context` folder (including `generate.py`) into your project and makes the generator executable.
+- `rm -rf .context` ensures any existing `.context` is replaced cleanly.
+- `chmod +x` may fail silently on filesystems that don’t support execute bits — you can always run with `python3 .context/generate.py`.
+
+#### Windows PowerShell
+
+```powershell
+git clone --depth=1 https://github.com/temrb/generate-project-context.git tmp_repo
+Remove-Item -Recurse -Force .context -ErrorAction SilentlyContinue
+Move-Item tmp_repo/.context . -Force
+Remove-Item tmp_repo -Recurse -Force
+```
+
+- Existing `.context` is removed before copying to avoid merge/nesting issues.
+
+Both commands copy the `.context` folder (including `generate.py`) into your project. PowerShell doesn’t require `chmod`, but if you later run the generator from a Unix-like shell you can add execute permissions with `chmod +x .context/generate.py`.
+
+**Tip:** Add generated outputs directory to `.gitignore` if not already ignored:
+
+```bash
+echo ".context/generated/" >> .gitignore
+```
 
 ## Optional deps
 
@@ -152,7 +171,7 @@ Outputs are placed in `.context/generated/` by default.
 
 - **Config present but not loaded**
 
-  ```
+  ```text
   Warning: Config file .context/.ai-context.yml exists but PyYAML is not installed
   ```
 
